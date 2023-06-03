@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Input from '../forms/Input';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Input from "../forms/Input";
 
 function SearchBar() {
-  const [term, setTerm] = useState('');
+  const [term, setTerm] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = (event) => {
