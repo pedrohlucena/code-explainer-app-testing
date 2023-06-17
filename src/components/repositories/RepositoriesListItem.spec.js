@@ -7,7 +7,9 @@ function renderComponent() {
     full_name: "pedrohlucena/code-explainer-app-testing",
     description:
       'Project which I wrote its unit tests during the course "React Testing Library and Jest: The Complete Guide"',
-    owner: "pedrohlucena",
+    owner: {
+      login: "pedrohlucena",
+    },
     name: "pedrohlucena/code-explainer-app-testing",
     language: "Javascript",
     html_url: "https://github.com/pedrohlucena/code-explainer-app-testing",
@@ -35,5 +37,32 @@ describe("<RepositoriesListItem />", () => {
     });
 
     expect(linkGithub).toHaveAttribute("href", repositoryMock.html_url);
+  });
+
+  it("should show an icon of the primary language of the repository", async () => {
+    const { repositoryMock } = renderComponent();
+
+    const icon = await screen.findByRole("img", {
+      name: new RegExp(repositoryMock.language, "i"),
+    });
+
+    expect(icon).toHaveClass("js-icon");
+  });
+
+  it("should show an icon to the code editor page", async () => {
+    const { repositoryMock } = renderComponent();
+
+    await screen.findByRole("img", {
+      name: new RegExp(repositoryMock.language, "i"),
+    });
+
+    const link = screen.getByRole("link", {
+      name: new RegExp(`${repositoryMock.owner.login}/`, "i"),
+    });
+
+    expect(link).toHaveAttribute(
+      "href",
+      `/repositories/${repositoryMock.full_name}`
+    );
   });
 });
