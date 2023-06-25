@@ -1,33 +1,25 @@
 import { render, screen } from "@testing-library/react";
-import { rest } from "msw";
-import { setupServer } from "msw/node";
+import { createServer } from "../test/server";
 import { MemoryRouter } from "react-router";
 import HomeRoute from "./HomeRoute";
 
-const handlers = [
-  rest.get("/api/repositories", (req, res, ctx) => {
-    const language = req.url.searchParams.get("q").split("language:")[1];
+createServer([
+  {
+    path: "/api/repositories",
+    res: (req) => {
+      const language = req.url.searchParams.get("q").split("language:")[1];
 
-    return res(
-      ctx.json({
+      return {
         items: [
           { id: 1, full_name: `${language}_one` },
           { id: 2, full_name: `${language}_two` },
         ],
-      })
-    );
-  }),
-];
+      };
+    },
+  },
+]);
 
 describe("<HomeRoute/>", () => {
-  const server = setupServer(...handlers);
-
-  beforeAll(() => server.listen());
-
-  afterEach(() => server.resetHandlers());
-
-  afterAll(() => server.close());
-
   it("should render two links for each language table", async () => {
     render(
       <MemoryRouter>
