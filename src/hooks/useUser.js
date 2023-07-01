@@ -1,5 +1,5 @@
-import axios from 'axios';
-import useSWR from 'swr';
+import axios from "axios";
+import useSWR from "swr";
 
 async function userFetcher(url) {
   const res = await axios.get(url);
@@ -8,7 +8,7 @@ async function userFetcher(url) {
 }
 
 export default function useUser() {
-  const { data, error, isLoading } = useSWR('/api/user', userFetcher);
+  const { data, error, isLoading } = useSWR("/api/user", userFetcher);
 
   return {
     user: data?.user,
